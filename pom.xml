@@ -61,6 +61,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.dannyhn.sqlite</groupId>
+			<artifactId>sqlite-lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
