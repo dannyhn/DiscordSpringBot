@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.client.constants.ClientConstants;
 import com.github.dannyhn.bot.service.InsultService;
+import com.github.dannyhn.bot.service.MessageService;
 import com.github.dannyhn.bot.service.UserService;
-import com.github.dannyhn.bot.util.MessageUtil;
 
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
@@ -28,11 +28,14 @@ public class InsultMessageHandler implements MessageHandler {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MessageService messageService;
 
 	@Override
 	public void handleMessage(IMessage message) {
 		String messageToSend = getInsultFromMessage(message);
-		MessageUtil.sendMessage(message.getChannel(), messageToSend, message, true);
+		messageService.sendMessage(message.getChannel(), messageToSend, message, true);
 
 	}
 	

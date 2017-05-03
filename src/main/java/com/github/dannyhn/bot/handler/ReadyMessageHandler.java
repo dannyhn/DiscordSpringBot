@@ -3,8 +3,8 @@ package com.github.dannyhn.bot.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.dannyhn.bot.service.MessageService;
 import com.github.dannyhn.bot.service.UserService;
-import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.game.machikoro.Board;
 
 import sx.blah.discord.handle.obj.IGuild;
@@ -22,11 +22,14 @@ public class ReadyMessageHandler implements MessageHandler {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MessageService messageService;
 
 	@Override
 	public void handleMessage(IMessage message) {
 		String messageToSend = readyUp(message.getAuthor(), message.getGuild());
-		MessageUtil.sendMessage(message.getChannel(), messageToSend, message, true);
+		messageService.sendMessage(message.getChannel(), messageToSend, message, true);
 
 	}
 	

@@ -2,7 +2,7 @@ package com.github.dannyhn.bot.handler;
 
 import org.springframework.stereotype.Component;
 
-import com.github.dannyhn.bot.util.MessageUtil;
+import com.github.dannyhn.bot.service.MessageService;
 
 import sx.blah.discord.handle.obj.Status;
 import sx.blah.discord.handle.obj.Status.StatusType;

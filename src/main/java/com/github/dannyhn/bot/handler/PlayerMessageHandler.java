@@ -3,8 +3,8 @@ package com.github.dannyhn.bot.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.dannyhn.bot.service.MessageService;
 import com.github.dannyhn.bot.service.UserService;
-import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.game.machikoro.Board;
 import com.github.dannyhn.game.machikoro.Card;
 import com.github.dannyhn.game.machikoro.Player;
@@ -24,6 +24,9 @@ public class PlayerMessageHandler implements MessageHandler {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MessageService messageService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -32,7 +35,7 @@ public class PlayerMessageHandler implements MessageHandler {
 		for (IUser user : message.getMentions()) {
 			messageToSend += getInfo(user, guild);
 		}
-		MessageUtil.sendMessage(message.getChannel(), messageToSend, message, true);
+		messageService.sendMessage(message.getChannel(), messageToSend, message, true);
 
 	}
 	

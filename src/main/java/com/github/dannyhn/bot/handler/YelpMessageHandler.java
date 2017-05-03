@@ -3,8 +3,8 @@ package com.github.dannyhn.bot.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.dannyhn.bot.service.MessageService;
 import com.github.dannyhn.bot.service.YelpService;
-import com.github.dannyhn.bot.util.MessageUtil;
 
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -19,6 +19,9 @@ public class YelpMessageHandler implements MessageHandler{
 	
 	@Autowired
 	private YelpService yelpService;
+	
+	@Autowired
+	private MessageService messageService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -38,7 +41,7 @@ public class YelpMessageHandler implements MessageHandler{
 		String zipcode = message.getContent().replaceAll(".yelp", "");
 		zipcode = zipcode.trim();
 		String restaurant = yelpService.getYelpInfoFromZipCode(zipcode);
-		MessageUtil.sendMessage(message.getChannel(), restaurant, message, false);
+		messageService.sendMessage(message.getChannel(), restaurant, message, false);
 	}
 	
 	/**
@@ -50,7 +53,7 @@ public class YelpMessageHandler implements MessageHandler{
 		String zipcode = message.getContent().replaceAll(".yelplist", "");
 		zipcode = zipcode.trim();
 		String restaurant = yelpService.getYelpListInfoFromZipCode(zipcode);
-		MessageUtil.sendMessage(message.getChannel(), restaurant, message, false);
+		messageService.sendMessage(message.getChannel(), restaurant, message, false);
 	}
 
 }

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.service.ContextService;
-import com.github.dannyhn.bot.util.MessageUtil;
+import com.github.dannyhn.bot.service.MessageService;
 
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -14,11 +14,14 @@ public class ContextMessageHandler implements MessageHandler{
 	@Autowired
 	private ContextService contextService;
 	
+	@Autowired
+	private MessageService messageService;
+	
 	@Override
 	public void handleMessage(IMessage message) {
 		String messageStr = message.getContent().trim();
 		String messageToSend = contextService.getContext(messageStr);
-		MessageUtil.sendMessage(message.getChannel(), messageToSend, message, false);
+		messageService.sendMessage(message.getChannel(), messageToSend, message, false);
 	}
 
 }

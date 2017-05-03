@@ -1,13 +1,13 @@
-package com.github.dannyhn.bot.util;
+package com.github.dannyhn.bot.service;
 
 import org.apache.commons.lang3.StringUtils;
 
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 
-public final class MessageUtil {
+public class MessageService {
 
-	public static void sendMessage(IChannel channel, String message, IMessage original, boolean delete) {
+	public void sendMessage(IChannel channel, String message, IMessage original, boolean delete) {
 		if (StringUtils.isEmpty(message)) {
 			return;
 		}
