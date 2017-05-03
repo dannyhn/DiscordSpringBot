@@ -2,6 +2,9 @@ package com.github.dannyhn.bot.handler;
 
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.service.RandomWordService;
 import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.bot.util.UserUtil;
@@ -13,7 +16,11 @@ import sx.blah.discord.handle.obj.IUser;
  * @author Danny
  *
  */
+@Component
 public class TypingEventHandler {
+	
+	@Autowired
+	private RandomWordService randomWordService;
 	
 	private static long time = 1;
 
@@ -33,7 +40,7 @@ public class TypingEventHandler {
 		int randInt = random.nextInt(3);
 		switch(randInt) {
 		case 0:
-			return userName + " types slower than a " + RandomWordService.getInstance().randomAnimal();
+			return userName + " types slower than a " + randomWordService.randomAnimal();
 		case 1:
 			return "does " + userName + " know that you can type with two hands";
 		case 2:

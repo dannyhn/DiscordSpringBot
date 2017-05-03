@@ -1,15 +1,19 @@
-package com.github.dannyhn.bot.util;
+package com.github.dannyhn.bot.service;
 
 import java.util.Random;
 
-import com.github.dannyhn.bot.service.RandomWordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
  /**
  * @author Tiffany
  *
  */
-public class ComplimentUtil {
+@Component
+public class ComplimentService {
 
+	@Autowired
+	private RandomWordService randomWordService;
 	
 	/**
 	 * Returns a random compliment <3
@@ -17,7 +21,7 @@ public class ComplimentUtil {
 	 * @param name
 	 * @return
 	 */
-	public static synchronized String getCompliment(String name) {
+	public String getCompliment(String name) {
 		Random random = new Random();
 		int randNum = random.nextInt(1);
 		switch(randNum) {
@@ -39,10 +43,9 @@ public class ComplimentUtil {
 	 * @return
 	 */
 	//TODO Create random words for randomWordUtil and come up with cute phrases xoxoxo
-	private static synchronized String dynamicCompliment(String name) {
+	private String dynamicCompliment(String name) {
 		Random random = new Random();
 		int randNum = random.nextInt(7);
-		RandomWordService randomWordService = RandomWordService.getInstance();
 		switch(randNum) {
 		case 0:
 			return String.format("%2$s" + "s trusts %1$s, you can too!", name, randomWordService.randomAnimal()); //Tiffany
@@ -70,7 +73,7 @@ public class ComplimentUtil {
 	 * @param name
 	 * @return
 	 */
-	private static synchronized String staticCompliment(String name) {
+	private String staticCompliment(String name) {
 		Random random = new Random();
 		int randNum = random.nextInt(9);
 		switch(randNum) {

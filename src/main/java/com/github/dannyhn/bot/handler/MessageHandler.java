@@ -5,7 +5,7 @@ import sx.blah.discord.handle.obj.IMessage;
 /**
  * stuffs
  * 
- * @author Tiffany
+ * @author Danny
  *
  */
 public interface MessageHandler {

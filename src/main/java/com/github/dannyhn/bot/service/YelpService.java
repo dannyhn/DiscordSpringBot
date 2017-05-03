@@ -3,6 +3,9 @@ package com.github.dannyhn.bot.service;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.cache.KCache;
 import com.github.dannyhn.cache.KittyCache;
 import com.github.dannyhn.yelp.Business;
@@ -13,26 +16,17 @@ import com.github.dannyhn.yelp.YelpConstants;
  * @author Danny
  *
  */
+@Component
 public class YelpService {
+	
+	@Autowired
+	private ContextService contextService;
 	
 	private KCache<String, List<Business>> cache;
 	
 	private YelpAPI yelp;
 	private Random random = new Random();
-	
-	private static YelpService yelpService;
-	
-	/**
-	 *  Way to get singleton instance
-	 * 
-	 * @return
-	 */
-	public static synchronized YelpService getInstance() {
-		if (yelpService == null) {
-			yelpService = new YelpService();
-		}
-		return yelpService;
-	}
+		
 
 	public String getYelpInfoFromZipCode(String zipcode) {
 		if (yelp == null || cache == null) {
@@ -64,7 +58,7 @@ public class YelpService {
 		for (Business restaurant : business) {
 			result += index++ + ") " + restaurant.getName() + "\n";
 		}
-		ContextService.getInstance().addBusiness(business);
+		contextService.addBusiness(business);
 		return result;
 	}
 	
@@ -100,10 +94,6 @@ public class YelpService {
 				cache.remove(zipcode);
 			}
 		}
-	}
-	
-	private YelpService() {
-		
 	}
 	
 }

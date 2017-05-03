@@ -2,8 +2,11 @@ package com.github.dannyhn.bot.handler;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.client.constants.ClientConstants;
-import com.github.dannyhn.bot.util.InsultUtil;
+import com.github.dannyhn.bot.service.InsultService;
 import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.bot.util.UserUtil;
 
@@ -14,10 +17,14 @@ import sx.blah.discord.handle.obj.IUser;
 /**
  * Message Handler for Insults
  * 
- * @author Tiffany
+ * @author Danny
  *
  */
+@Component
 public class InsultMessageHandler implements MessageHandler {
+	
+	@Autowired
+	private InsultService insultService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -42,7 +49,7 @@ public class InsultMessageHandler implements MessageHandler {
 			name = UserUtil.getName(user, currentGuild);
 			// TODO add delay for spammers
 			if (!name.equalsIgnoreCase(ClientConstants.BOTNAME)) {
-				messageToSend += InsultUtil.getInsult(name) + "\n";
+				messageToSend += insultService.getInsult(name) + "\n";
 			} else {
 				messageToSend += UserUtil.getName(message.getAuthor(), currentGuild) + " sucks cows\n";
 			}

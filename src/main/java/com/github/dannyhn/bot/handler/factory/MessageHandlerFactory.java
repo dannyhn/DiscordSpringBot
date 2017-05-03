@@ -1,5 +1,8 @@
 package com.github.dannyhn.bot.handler.factory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.handler.ComplimentMessageHandler;
 import com.github.dannyhn.bot.handler.ContextMessageHandler;
 import com.github.dannyhn.bot.handler.HelpMessageHandler;
@@ -19,39 +22,77 @@ import sx.blah.discord.handle.obj.IMessage;
 /**
  * Factory that determines which MessageHandler to use
  * 
- * @author Tiffany
+ * @author Danny
  *
  */
+@Component
 public class MessageHandlerFactory {
+	
+	@Autowired
+	private InfoMessageHandler infoMessageHandler;
+
+	@Autowired
+	private StevenMessageHandler stevenMessageHandler;
+
+	@Autowired
+	private YelpMessageHandler yelpMessageHandler;
+	
+	@Autowired
+	private ComplimentMessageHandler complimentMessageHandler;
+	
+	@Autowired
+	private QuoteMessageHandler quoteMessageHandler;
+	
+	@Autowired
+	private HelpMessageHandler helpMessageHandler;
+	
+	@Autowired
+	private InsultMessageHandler insultMessageHandler;
+	
+	@Autowired
+	private ReadyMessageHandler readyMessageHandler;
+	
+	@Autowired
+	private RollMessageHandler rollMessageHandler;
+	
+	@Autowired
+	private PlayerMessageHandler playerMessageHandler;
+	
+	@Autowired
+	private ProfanityMessageHandler profanityMessageHandler;
+	
+	@Autowired
+	private ContextMessageHandler contextMessageHandler;
+	
 	/**
 	 * @param message
 	 * @return
 	 */
 	public MessageHandler getMessageHandler(IMessage message) {
 		if (message.getContent().startsWith(".info")) {
-			return new InfoMessageHandler();
+			return infoMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".steven")) {
-			return new StevenMessageHandler();
+			return stevenMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".yelp")) {
-			return new YelpMessageHandler();
+			return yelpMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".c")) {
-			return new ComplimentMessageHandler();
+			return complimentMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".quote")) {
-			return new QuoteMessageHandler();
+			return quoteMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".help")) {
-			return new HelpMessageHandler();
+			return helpMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".i")) {
-			return new InsultMessageHandler();
+			return insultMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".ready")) {
-			return new ReadyMessageHandler();
+			return readyMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".roll")) {
-			return new RollMessageHandler();
+			return rollMessageHandler;
 		} else if (message.getContent().toLowerCase().startsWith(".playerinfo")) {
-			return new PlayerMessageHandler();
+			return playerMessageHandler;
 		} else if (isProfanity(message)) {
-			return new ProfanityMessageHandler();
+			return profanityMessageHandler;
 		} else {
-			return new ContextMessageHandler();
+			return contextMessageHandler;
 		}
 
 	}

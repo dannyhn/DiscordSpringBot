@@ -4,28 +4,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.yelp.Business;
 
 /**
  * @author Danny
  *
  */
+@Component
 public final class ContextService {
 
-	private Map<Integer, Business> contextYelpMap;
-	private static ContextService contextService;
-	
-	/**
-	 *  Way to get singleton instance
-	 * 
-	 * @return
-	 */
-	public static synchronized ContextService getInstance() {
-		if (contextService == null) {
-			contextService = new ContextService();
-		}
-		return contextService;
-	}
+	private Map<Integer, Business> contextYelpMap = new ConcurrentHashMap<Integer, Business>();;
 	
 	public String getContext(String message) {
 		if (isInteger(message)) {
@@ -59,7 +49,4 @@ public final class ContextService {
 	    return true;
 	}
 	
-	private ContextService() {
-		contextYelpMap = new ConcurrentHashMap<Integer, Business>();
-	}
 }

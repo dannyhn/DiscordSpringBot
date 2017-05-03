@@ -2,8 +2,11 @@ package com.github.dannyhn.bot.handler;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.client.constants.ClientConstants;
-import com.github.dannyhn.bot.util.ComplimentUtil;
+import com.github.dannyhn.bot.service.ComplimentService;
 import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.bot.util.UserUtil;
 
@@ -16,7 +19,11 @@ import sx.blah.discord.handle.obj.IUser;
  * @author Tiffany
  *
  */
+@Component
 public class ComplimentMessageHandler implements MessageHandler {
+	
+	@Autowired
+	private ComplimentService complimentService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -41,7 +48,7 @@ public class ComplimentMessageHandler implements MessageHandler {
 			name = UserUtil.getName(user, currentGuild);
 			// TODO add delay for spammers
 			if (!name.equalsIgnoreCase(ClientConstants.BOTNAME)) {
-				messageToSend += ComplimentUtil.getCompliment(name) + "\n";
+				messageToSend += complimentService.getCompliment(name) + "\n";
 			} else {
 				messageToSend += UserUtil.getName(message.getAuthor(), currentGuild) + " likes unicorns\n";
 			}

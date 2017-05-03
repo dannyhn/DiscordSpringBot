@@ -1,5 +1,7 @@
 package com.github.dannyhn.bot.handler;
 
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.util.MessageUtil;
 
 import sx.blah.discord.handle.obj.Status;
@@ -9,6 +11,7 @@ import sx.blah.discord.handle.obj.Status.StatusType;
  * @author Danny
  *
  */
+@Component
 public class StatusChangeHandler {
 
 	public void handleStatusChangeEvent(Status status) {

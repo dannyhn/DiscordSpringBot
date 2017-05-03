@@ -1,5 +1,7 @@
 package com.github.dannyhn.bot.service;
 
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.cache.KCache;
 import com.github.dannyhn.cache.KittyCache;
 
@@ -7,28 +9,18 @@ import com.github.dannyhn.cache.KittyCache;
  * @author Danny
  *
  */
+@Component
 public class RateLimitingService {
 	
-	private KCache<String, Integer> userCache;
+	private KCache<String, Integer> userCache = new KittyCache<String, Integer>(100);
+
 	private int counter;
 	
 	private long previousTime = 0;
 	
-	private static RateLimitingService rateLimitingService;
 	
 	private static final int userLimit = 10;
 	private static final int botLimit = 20;
-	/**
-	 *  Way to get singleton instance
-	 * 
-	 * @return
-	 */
-	public static synchronized RateLimitingService getInstance() {
-		if (rateLimitingService == null) {
-			rateLimitingService = new RateLimitingService();
-		}
-		return rateLimitingService;
-	}
 	
 	public boolean canMakeRequest(String name) {
 		 if (!canUserMakeRequest(name)) {
@@ -60,7 +52,6 @@ public class RateLimitingService {
 		return true;
 	}
 	
-	
 	/**
 	 * used to get time between request
 	 * 
@@ -79,8 +70,5 @@ public class RateLimitingService {
 	}
 
 	
-	private RateLimitingService() {
-		userCache = new KittyCache<String, Integer>(100);
-	}
 	
 }

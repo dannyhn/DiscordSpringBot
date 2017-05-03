@@ -1,5 +1,8 @@
 package com.github.dannyhn.bot.client.listeners;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.handler.ContextMessageHandler;
 import com.github.dannyhn.bot.handler.MessageHandler;
 import com.github.dannyhn.bot.handler.StatusChangeHandler;
@@ -23,7 +26,26 @@ import sx.blah.discord.handle.obj.Status;
  * @author Danny
  *
  */
+@Component
 public class MessageListener {
+	
+	@Autowired
+	private MessageHandlerFactory messageHandlerFactory;
+	
+	@Autowired
+	private StatusChangeHandler statusChangeHandler;
+	
+	@Autowired
+	private UserVoiceChannelJoinHandler userVoiceChannelJoinHandler;
+	
+	@Autowired
+	private TypingEventHandler typingEventHandler;
+	
+	@Autowired
+	private RateLimitingService rateLimitingService;
+	
+	@Autowired
+	private ContextService contextService;
 
 	/**
 	 * Triggers on bot startup
@@ -32,13 +54,12 @@ public class MessageListener {
 	 */
 	@EventSubscriber
 	public void onReadyEvent(ReadyEvent event) {
-		RandomWordService.getInstance();
+		//RandomWordService.getInstance();
 	}
 	
 	@EventSubscriber
 	public void onStatusChangeEvent(StatusChangeEvent event) {
-		StatusChangeHandler statueChangeHandler = new StatusChangeHandler();
-		statueChangeHandler.handleStatusChangeEvent(event.getNewStatus());
+		statusChangeHandler.handleStatusChangeEvent(event.getNewStatus());
 	}
 
 	/**
@@ -50,8 +71,7 @@ public class MessageListener {
 	@EventSubscriber
 	public void onMessageReceivedEvent(MessageReceivedEvent event) {
 		IMessage message = event.getMessage();
-		MessageHandlerFactory handlerFactory = new MessageHandlerFactory();
-		MessageHandler handler = handlerFactory.getMessageHandler(message);
+		MessageHandler handler = messageHandlerFactory.getMessageHandler(message);
 		if (isValidCommand(handler, message) && canMakeRequest(message)) {
 			handler.handleMessage(message);
 		}
@@ -60,27 +80,25 @@ public class MessageListener {
 	
 	@EventSubscriber
 	public void onUserVoiceChannelJoinEvent(UserVoiceChannelJoinEvent event) {
-		UserVoiceChannelJoinHandler handler = new UserVoiceChannelJoinHandler();
-		handler.handleUserVoiceChannelJoinEvent(event.getChannel(), event.getUser());
+		userVoiceChannelJoinHandler.handleUserVoiceChannelJoinEvent(event.getChannel(), event.getUser());
 		
 	}
 	
 	@EventSubscriber
 	public void onTypingEvent(TypingEvent event) {
-		TypingEventHandler handler = new TypingEventHandler();
-		handler.handleTypingEvent(event.getChannel(), event.getUser());
+		typingEventHandler.handleTypingEvent(event.getChannel(), event.getUser());
 	}
 	
 	private boolean isValidCommand(MessageHandler handler, IMessage message) {
 		if (handler instanceof ContextMessageHandler)  {
-			return ContextService.getInstance().getContext(message.getContent()) != null;
+			return contextService.getContext(message.getContent()) != null;
 		} else {
 			return true;
 		}
 	}
 	
 	private boolean canMakeRequest(IMessage message) {
-		return RateLimitingService.getInstance().canMakeRequest(message.getAuthor().getID());
+		return rateLimitingService.canMakeRequest(message.getAuthor().getID());
 	}
 
 }

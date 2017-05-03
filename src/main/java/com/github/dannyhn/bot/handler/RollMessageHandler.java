@@ -2,6 +2,8 @@ package com.github.dannyhn.bot.handler;
 
 import java.util.Random;
 
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.bot.util.UserUtil;
 import com.github.dannyhn.game.machikoro.Board;
@@ -16,6 +18,7 @@ import sx.blah.discord.handle.obj.IUser;
  * @author Danny
  *
  */
+@Component
 public class RollMessageHandler implements MessageHandler {
 
 	@Override

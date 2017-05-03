@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Danny
  *
  */
-public final class RandomWordService {
+@Component
+public class RandomWordService implements InitializingBean{
 	
 	private Map<String, List<String>> wordMap;
 	private Random random = new Random();
@@ -26,20 +31,6 @@ public final class RandomWordService {
 	private final String adjBader = "adjBader";
 	private final String verb = "verb";	
 	private final String quote = "quote";
-	
-	private static RandomWordService randomWordService;
-	
-	/**
-	 * Way to get Singleton instance
-	 * 
-	 * @return
-	 */
-	public static synchronized RandomWordService getInstance() {
-		if (randomWordService == null) {
-			randomWordService = new RandomWordService();
-		}
-		return randomWordService;
-	}
 	
 	
 	/**
@@ -121,10 +112,19 @@ public final class RandomWordService {
 	 * @return
 	 */
 	private String convertStreamToString(String fileName, ClassLoader classLoader) {
-		InputStream inputStream = classLoader.getResourceAsStream(fileName);
-		if (inputStream == null) {
-			inputStream = classLoader.getResourceAsStream("resources/" + fileName);
+		Resource resource = new ClassPathResource(fileName);
+		InputStream inputStream;
+		try {
+			inputStream = resource.getInputStream();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return "";
 		}
+		
+//		InputStream inputStream = classLoader.getResourceAsStream(fileName);
+//		if (inputStream == null) {
+//			inputStream = classLoader.getResourceAsStream("resources/" + fileName);
+//		}
 		String theString = "";
 		try {
 			theString = IOUtils.toString(inputStream, "UTF-8");
@@ -136,8 +136,9 @@ public final class RandomWordService {
 		return theString;
 
 	}
-	
-	private RandomWordService() {
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
 		wordMap = new HashMap<String, List<String>>();
 		ObjectMapper mapper = new ObjectMapper();
 		ClassLoader classLoader = RandomWordService.class.getClassLoader();

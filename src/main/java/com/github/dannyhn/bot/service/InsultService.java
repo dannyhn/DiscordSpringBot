@@ -1,17 +1,22 @@
-package com.github.dannyhn.bot.util;
+package com.github.dannyhn.bot.service;
 
 import java.util.Random;
 
-import com.github.dannyhn.bot.service.RandomWordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
- * Utility to Generate Insults
+ * Service to Generate Insults
  * 
  * @author Danny
  *
  */
-public final class InsultUtil {
+@Component
+public class InsultService {
 
+	@Autowired
+	private RandomWordService randomWordService;
+	
 	
 	/**
 	 * Returns a random Insult
@@ -19,7 +24,7 @@ public final class InsultUtil {
 	 * @param name
 	 * @return
 	 */
-	public static synchronized String getInsult(String name) {
+	public String getInsult(String name) {
 		Random random = new Random();
 		int randNum = random.nextInt(2);
 		switch(randNum) {
@@ -40,10 +45,9 @@ public final class InsultUtil {
 	 * @param name
 	 * @return
 	 */
-	private static synchronized String dynamicInsult(String name) {
+	private String dynamicInsult(String name) {
 		Random random = new Random();
 		int randNum = random.nextInt(7);
-		RandomWordService randomWordService = RandomWordService.getInstance();
 		switch(randNum) {
 		case 0:
 			return String.format("my %2$s can play better than %1$s", name, randomWordService.randomAnimal()); //Danny		
@@ -71,7 +75,7 @@ public final class InsultUtil {
 	 * @param name
 	 * @return
 	 */
-	private static synchronized String staticInsult(String name) {
+	private String staticInsult(String name) {
 		Random random = new Random();
 		int randNum = random.nextInt(11);
 		switch(randNum) {

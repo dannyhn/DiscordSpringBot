@@ -2,8 +2,11 @@ package com.github.dannyhn.bot.handler;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.github.dannyhn.bot.client.constants.ClientConstants;
-import com.github.dannyhn.bot.util.InsultUtil;
+import com.github.dannyhn.bot.service.InsultService;
 import com.github.dannyhn.bot.util.MessageUtil;
 import com.github.dannyhn.bot.util.UserUtil;
 
@@ -17,7 +20,11 @@ import sx.blah.discord.handle.obj.IUser;
  * @author Danny
  *
  */
+@Component
 public class ProfanityMessageHandler implements MessageHandler {
+	
+	@Autowired
+	private InsultService insultService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -34,7 +41,7 @@ public class ProfanityMessageHandler implements MessageHandler {
 	 */
 	private String getInsultFromMessage(IMessage message) {
 		IGuild currentGuild = message.getGuild();
-		String messageToSend = InsultUtil.getInsult(UserUtil.getName(message.getAuthor(), currentGuild)) + "\n";
+		String messageToSend = insultService.getInsult(UserUtil.getName(message.getAuthor(), currentGuild)) + "\n";
 
 		return messageToSend;
 	}
