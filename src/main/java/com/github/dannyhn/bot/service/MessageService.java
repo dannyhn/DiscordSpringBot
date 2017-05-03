@@ -1,10 +1,12 @@
 package com.github.dannyhn.bot.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 
+@Component
 public class MessageService {
 
 	public void sendMessage(IChannel channel, String message, IMessage original, boolean delete) {

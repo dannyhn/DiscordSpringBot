@@ -2,6 +2,8 @@ package com.github.dannyhn.bot.service;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
@@ -9,6 +11,7 @@ import sx.blah.discord.handle.obj.IUser;
  * @author Danny
  *
  */
+@Component
 public class UserService {
 
 	/**
