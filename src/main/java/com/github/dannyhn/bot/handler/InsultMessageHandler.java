@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.client.constants.ClientConstants;
 import com.github.dannyhn.bot.service.InsultService;
+import com.github.dannyhn.bot.service.UserService;
 import com.github.dannyhn.bot.util.MessageUtil;
-import com.github.dannyhn.bot.util.UserUtil;
 
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
@@ -25,6 +25,9 @@ public class InsultMessageHandler implements MessageHandler {
 	
 	@Autowired
 	private InsultService insultService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -46,12 +49,12 @@ public class InsultMessageHandler implements MessageHandler {
 		String name;
 		String messageToSend = "";
 		for (IUser user : usersMentioned) {
-			name = UserUtil.getName(user, currentGuild);
+			name = userService.getName(user, currentGuild);
 			// TODO add delay for spammers
 			if (!name.equalsIgnoreCase(ClientConstants.BOTNAME)) {
 				messageToSend += insultService.getInsult(name) + "\n";
 			} else {
-				messageToSend += UserUtil.getName(message.getAuthor(), currentGuild) + " sucks cows\n";
+				messageToSend += userService.getName(message.getAuthor(), currentGuild) + " sucks cows\n";
 			}
 		}
 		return messageToSend;

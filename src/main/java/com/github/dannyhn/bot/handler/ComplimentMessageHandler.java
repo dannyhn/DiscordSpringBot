@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.client.constants.ClientConstants;
 import com.github.dannyhn.bot.service.ComplimentService;
+import com.github.dannyhn.bot.service.UserService;
 import com.github.dannyhn.bot.util.MessageUtil;
-import com.github.dannyhn.bot.util.UserUtil;
 
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
@@ -24,6 +24,9 @@ public class ComplimentMessageHandler implements MessageHandler {
 	
 	@Autowired
 	private ComplimentService complimentService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -45,12 +48,12 @@ public class ComplimentMessageHandler implements MessageHandler {
 		String name;
 		String messageToSend = "";
 		for (IUser user : usersMentioned) {
-			name = UserUtil.getName(user, currentGuild);
+			name = userService.getName(user, currentGuild);
 			// TODO add delay for spammers
 			if (!name.equalsIgnoreCase(ClientConstants.BOTNAME)) {
 				messageToSend += complimentService.getCompliment(name) + "\n";
 			} else {
-				messageToSend += UserUtil.getName(message.getAuthor(), currentGuild) + " likes unicorns\n";
+				messageToSend += userService.getName(message.getAuthor(), currentGuild) + " likes unicorns\n";
 			}
 		}
 		return messageToSend;

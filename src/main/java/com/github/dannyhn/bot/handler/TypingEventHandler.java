@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.service.RandomWordService;
+import com.github.dannyhn.bot.service.UserService;
 import com.github.dannyhn.bot.util.MessageUtil;
-import com.github.dannyhn.bot.util.UserUtil;
 
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IUser;
@@ -22,13 +22,16 @@ public class TypingEventHandler {
 	@Autowired
 	private RandomWordService randomWordService;
 	
+	@Autowired
+	private UserService userService;
+	
 	private static long time = 1;
 
 	private static final long FIFTEENSECONDS = 15000;
 	public void handleTypingEvent(IChannel channel, IUser user) {
 		long currentTime = System.currentTimeMillis();
 		if (currentTime - time > FIFTEENSECONDS) {
-			String insult = typingInsult(UserUtil.getName(user, channel.getGuild()));
+			String insult = typingInsult(userService.getName(user, channel.getGuild()));
 			time = currentTime;
 			MessageUtil.sendMessage(channel, insult, null, false);
 		}

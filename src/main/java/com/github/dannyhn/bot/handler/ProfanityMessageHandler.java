@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.client.constants.ClientConstants;
 import com.github.dannyhn.bot.service.InsultService;
+import com.github.dannyhn.bot.service.UserService;
 import com.github.dannyhn.bot.util.MessageUtil;
-import com.github.dannyhn.bot.util.UserUtil;
 
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
@@ -25,6 +25,9 @@ public class ProfanityMessageHandler implements MessageHandler {
 	
 	@Autowired
 	private InsultService insultService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public void handleMessage(IMessage message) {
@@ -41,7 +44,7 @@ public class ProfanityMessageHandler implements MessageHandler {
 	 */
 	private String getInsultFromMessage(IMessage message) {
 		IGuild currentGuild = message.getGuild();
-		String messageToSend = insultService.getInsult(UserUtil.getName(message.getAuthor(), currentGuild)) + "\n";
+		String messageToSend = insultService.getInsult(userService.getName(message.getAuthor(), currentGuild)) + "\n";
 
 		return messageToSend;
 	}

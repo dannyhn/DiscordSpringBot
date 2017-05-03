@@ -1,4 +1,4 @@
-package com.github.dannyhn.bot.util;
+package com.github.dannyhn.bot.service;
 
 import java.util.Optional;
 
@@ -9,7 +9,7 @@ import sx.blah.discord.handle.obj.IUser;
  * @author Danny
  *
  */
-public final class UserUtil {
+public class UserService {
 
 	/**
 	 * Gets name of User based off Guild
@@ -18,7 +18,7 @@ public final class UserUtil {
 	 * @param guild
 	 * @return
 	 */
-	public static String getName(IUser user, IGuild guild) {
+	public String getName(IUser user, IGuild guild) {
 
 		Optional<String> optionalName;
 		String name;
