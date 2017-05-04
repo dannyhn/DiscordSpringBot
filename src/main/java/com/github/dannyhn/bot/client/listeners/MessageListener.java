@@ -59,7 +59,7 @@ public class MessageListener {
 	
 	@EventSubscriber
 	public void onStatusChangeEvent(StatusChangeEvent event) {
-		statusChangeHandler.handleStatusChangeEvent(event.getNewStatus());
+		statusChangeHandler.handleStatusChangeEvent(event.getNewStatus(), event.getUser());
 	}
 
 	/**

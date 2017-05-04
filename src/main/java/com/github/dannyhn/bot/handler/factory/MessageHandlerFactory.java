@@ -8,6 +8,7 @@ import com.github.dannyhn.bot.handler.ContextMessageHandler;
 import com.github.dannyhn.bot.handler.HelpMessageHandler;
 import com.github.dannyhn.bot.handler.InfoMessageHandler;
 import com.github.dannyhn.bot.handler.InsultMessageHandler;
+import com.github.dannyhn.bot.handler.LastGameMessageHandler;
 import com.github.dannyhn.bot.handler.MessageHandler;
 import com.github.dannyhn.bot.handler.PlayerMessageHandler;
 import com.github.dannyhn.bot.handler.ProfanityMessageHandler;
@@ -64,33 +65,41 @@ public class MessageHandlerFactory {
 	@Autowired
 	private ContextMessageHandler contextMessageHandler;
 	
+	@Autowired
+	private LastGameMessageHandler lastGameMessageHandler;
+	
 	/**
 	 * @param message
 	 * @return
 	 */
 	public MessageHandler getMessageHandler(IMessage message) {
+		
+		String lowerCasedMessage = message.getContent().toLowerCase();
+		
 		if (message.getContent().startsWith(".info")) {
 			return infoMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".steven")) {
+		} else if (lowerCasedMessage.startsWith(".steven")) {
 			return stevenMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".yelp")) {
+		} else if (lowerCasedMessage.startsWith(".yelp")) {
 			return yelpMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".c")) {
+		} else if (lowerCasedMessage.startsWith(".c")) {
 			return complimentMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".quote")) {
+		} else if (lowerCasedMessage.startsWith(".quote")) {
 			return quoteMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".help")) {
+		} else if (lowerCasedMessage.startsWith(".help")) {
 			return helpMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".i")) {
+		} else if (lowerCasedMessage.startsWith(".i")) {
 			return insultMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".ready")) {
+		} else if (lowerCasedMessage.startsWith(".ready")) {
 			return readyMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".roll")) {
+		} else if (lowerCasedMessage.startsWith(".roll")) {
 			return rollMessageHandler;
-		} else if (message.getContent().toLowerCase().startsWith(".playerinfo")) {
+		} else if (lowerCasedMessage.startsWith(".playerinfo")) {
 			return playerMessageHandler;
 		} else if (isProfanity(message)) {
 			return profanityMessageHandler;
+		} else if(lowerCasedMessage.startsWith(".lastgame"))  {
+			return lastGameMessageHandler;
 		} else {
 			return contextMessageHandler;
 		}
