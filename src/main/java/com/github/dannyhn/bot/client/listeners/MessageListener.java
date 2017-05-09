@@ -71,6 +71,7 @@ public class MessageListener {
 	@EventSubscriber
 	public void onMessageReceivedEvent(MessageReceivedEvent event) {
 		IMessage message = event.getMessage();
+		System.out.println(message.getAuthor().getName() + " : " + message);
 		MessageHandler handler = messageHandlerFactory.getMessageHandler(message);
 		if (isValidCommand(handler, message) && canMakeRequest(message)) {
 			handler.handleMessage(message);

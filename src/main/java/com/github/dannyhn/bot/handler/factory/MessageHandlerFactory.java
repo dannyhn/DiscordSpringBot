@@ -8,6 +8,7 @@ import com.github.dannyhn.bot.handler.ContextMessageHandler;
 import com.github.dannyhn.bot.handler.HelpMessageHandler;
 import com.github.dannyhn.bot.handler.InfoMessageHandler;
 import com.github.dannyhn.bot.handler.InsultMessageHandler;
+import com.github.dannyhn.bot.handler.JoshMessageHandler;
 import com.github.dannyhn.bot.handler.LastGameMessageHandler;
 import com.github.dannyhn.bot.handler.MessageHandler;
 import com.github.dannyhn.bot.handler.PlayerMessageHandler;
@@ -68,6 +69,9 @@ public class MessageHandlerFactory {
 	@Autowired
 	private LastGameMessageHandler lastGameMessageHandler;
 	
+	@Autowired
+	private JoshMessageHandler joshMessageHandler;
+	
 	/**
 	 * @param message
 	 * @return
@@ -100,6 +104,8 @@ public class MessageHandlerFactory {
 			return profanityMessageHandler;
 		} else if(lowerCasedMessage.startsWith(".lastgame"))  {
 			return lastGameMessageHandler;
+		} else if (lowerCasedMessage.startsWith(".josh")) {
+			return joshMessageHandler;
 		} else {
 			return contextMessageHandler;
 		}

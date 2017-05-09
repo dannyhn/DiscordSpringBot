@@ -4,11 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.github.dannyhn.bot.client.constants.ClientConstants;
 import com.github.dannyhn.bot.client.listeners.MessageListener;
-import com.github.dannyhn.bot.util.ClientLoginUtil;
-import com.github.dannyhn.sqlite.client.SqliteClient;
-
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 
@@ -19,12 +15,11 @@ public class BotService {
 	private MessageListener messageListener;
 	
 	@Autowired
-	private SqliteClient client;
+	private IDiscordClient discordClient;
 	
 	@Scheduled(fixedRate = Long.MAX_VALUE, initialDelay = 10000)
 	public void startup() {
-		IDiscordClient client = ClientLoginUtil.createClient(ClientConstants.TOKEN, true);
-		EventDispatcher dispatcher = client.getDispatcher(); 
+		EventDispatcher dispatcher = discordClient.getDispatcher(); 
 		dispatcher.registerListener(messageListener);
 	}
 	
