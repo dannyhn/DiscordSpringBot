@@ -28,6 +28,8 @@ public class JoshMessageHandler implements MessageHandler {
 	@Autowired
 	private MessageService messageService;
 	
+	private int lastLine = -1;
+	
 	@Override
 	public void handleMessage(IMessage message) {
 		String messageToSend;
@@ -54,8 +56,11 @@ public class JoshMessageHandler implements MessageHandler {
 					linesFiltered.add(line);
 				}
 			}
-			Random random = new Random();
-			return linesFiltered.get(random.nextInt(linesFiltered.size()));
+			if (lastLine < 0 || lastLine >= linesFiltered.size())
+			{
+				lastLine = 0;
+			}
+			return linesFiltered.get(lastLine++);
 
 		}
 		return poem;

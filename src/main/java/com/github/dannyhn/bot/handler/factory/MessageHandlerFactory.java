@@ -13,6 +13,7 @@ import com.github.dannyhn.bot.handler.LastGameMessageHandler;
 import com.github.dannyhn.bot.handler.MessageHandler;
 import com.github.dannyhn.bot.handler.PlayerMessageHandler;
 import com.github.dannyhn.bot.handler.ProfanityMessageHandler;
+import com.github.dannyhn.bot.handler.PubgMessageHandler;
 import com.github.dannyhn.bot.handler.QuoteMessageHandler;
 import com.github.dannyhn.bot.handler.ReadyMessageHandler;
 import com.github.dannyhn.bot.handler.RollMessageHandler;
@@ -72,6 +73,9 @@ public class MessageHandlerFactory {
 	@Autowired
 	private JoshMessageHandler joshMessageHandler;
 	
+	@Autowired
+	private PubgMessageHandler pubgMessageHandler;
+	
 	/**
 	 * @param message
 	 * @return
@@ -106,6 +110,8 @@ public class MessageHandlerFactory {
 			return lastGameMessageHandler;
 		} else if (lowerCasedMessage.startsWith(".josh")) {
 			return joshMessageHandler;
+		} else if (lowerCasedMessage.startsWith(".pubg")) {
+			return pubgMessageHandler;
 		} else {
 			return contextMessageHandler;
 		}
