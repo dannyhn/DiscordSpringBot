@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.dannyhn.bot.data.User;
 import com.github.dannyhn.bot.service.MessageService;
 import com.github.dannyhn.sqlite.client.SqliteClient;
+import com.github.dannyhn.sqlite.client.SqliteObjectClient;
 
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
@@ -24,7 +26,8 @@ public class LastGameMessageHandler implements MessageHandler {
 	private MessageService messageService;
 	
 	@Autowired
-	private SqliteClient sqliteClient;
+	private SqliteObjectClient<User> sqliteClient;
+	
 	
 	@Override
 	public void handleMessage(IMessage message) {
@@ -38,11 +41,11 @@ public class LastGameMessageHandler implements MessageHandler {
 	}
 	
 	private String getLastGame(String id) {
-		String game = sqliteClient.read(id);
-		if ("error".equals(game)) {
+		User user = sqliteClient.read(id, User.class);
+		if (user == null) {
 			return "Information Not Found";
 		} else {
-			return "Last Game Played: " + game;
+			return "Last Game Played: " + user.getLastGame();
 		}
 	}
 	

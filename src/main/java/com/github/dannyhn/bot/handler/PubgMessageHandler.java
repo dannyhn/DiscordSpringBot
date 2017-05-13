@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import com.github.dannyhn.bot.data.User;
 import com.github.dannyhn.bot.service.MessageService;
+import com.github.dannyhn.sqlite.client.SqliteObjectClient;
 
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
@@ -29,9 +32,22 @@ public class PubgMessageHandler implements MessageHandler {
 	@Autowired
 	private MessageService messageService;
 	
+	@Autowired
+	private SqliteObjectClient<User> sqliteClient;
+	
 	@Override
 	public void handleMessage(IMessage message) {
 		IUser user = message.getAuthor();
+		User userFromDB = sqliteClient.read(user.getID(), User.class);
+		if (userFromDB == null || StringUtils.isBlank(userFromDB.getPubgUrl()))
+		{
+			messageService.sendMessage(message.getChannel(),"You are not important enough", message, true);
+		}
+		else
+		{
+			messageService.sendMessage(message.getChannel(),userFromDB.getPubgUrl(), message, true);
+		}
+		/*
 		if ("209171660224462859".equalsIgnoreCase(user.getID()))
 		{
 			messageService.sendMessage(message.getChannel(),"https://pubg.me/MasterTactioner", message, true);
@@ -48,6 +64,7 @@ public class PubgMessageHandler implements MessageHandler {
 		{
 			messageService.sendMessage(message.getChannel(),"https://pubg.me/senpai-_-", message, true);
 		}
-		System.out.println(user.getName() + " : " + user.getID());
+		User newUser = sqliteClient.read(user.getID(), User.class);
+		*/
 	}	
 }

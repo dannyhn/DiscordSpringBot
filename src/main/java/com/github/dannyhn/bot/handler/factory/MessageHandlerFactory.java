@@ -3,6 +3,7 @@ package com.github.dannyhn.bot.handler.factory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.dannyhn.bot.handler.AdminMessageHandler;
 import com.github.dannyhn.bot.handler.ComplimentMessageHandler;
 import com.github.dannyhn.bot.handler.ContextMessageHandler;
 import com.github.dannyhn.bot.handler.HelpMessageHandler;
@@ -76,6 +77,9 @@ public class MessageHandlerFactory {
 	@Autowired
 	private PubgMessageHandler pubgMessageHandler;
 	
+	@Autowired
+	private AdminMessageHandler adminMessageHandler;
+	
 	/**
 	 * @param message
 	 * @return
@@ -112,6 +116,8 @@ public class MessageHandlerFactory {
 			return joshMessageHandler;
 		} else if (lowerCasedMessage.startsWith(".pubg")) {
 			return pubgMessageHandler;
+		} else if (lowerCasedMessage.startsWith(".admin")) { 
+			return adminMessageHandler;
 		} else {
 			return contextMessageHandler;
 		}
