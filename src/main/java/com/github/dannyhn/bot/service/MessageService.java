@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.util.DiscordException;
+import sx.blah.discord.util.MissingPermissionsException;
+import sx.blah.discord.util.RateLimitException;
 
 @Component
 public class MessageService {
@@ -32,7 +35,11 @@ public class MessageService {
 	public void sendMessageToChannel(String channelID, String message) {
 		IChannel channel = discordClient.getChannelByID(channelID);
 		if (channel != null) {
-			
+			try {
+				channel.sendMessage(message);
+			} catch (MissingPermissionsException | RateLimitException | DiscordException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
