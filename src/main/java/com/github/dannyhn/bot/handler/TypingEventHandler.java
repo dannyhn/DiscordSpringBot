@@ -36,7 +36,7 @@ public class TypingEventHandler {
 		if (currentTime - time > FIFTEENSECONDS) {
 			String insult = typingInsult(userService.getName(user, channel.getGuild()));
 			time = currentTime;
-			messageService.sendMessage(channel, insult, null, false);
+			//messageService.sendMessage(channel, insult, null, false);
 		}
 	}
 	

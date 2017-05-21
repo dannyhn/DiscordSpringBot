@@ -25,6 +25,9 @@ public class UserService {
 
 		Optional<String> optionalName;
 		String name;
+		if (guild == null) {
+			return user.getName();
+		}
 		optionalName = user.getNicknameForGuild(guild);
 		if (optionalName.isPresent()) {
 			name = optionalName.get();

@@ -1,4 +1,4 @@
-package com.github.dannyhn.bot.handler;
+package com.github.dannyhn.bot.message.handler;
 
 import sx.blah.discord.handle.obj.IMessage;
 

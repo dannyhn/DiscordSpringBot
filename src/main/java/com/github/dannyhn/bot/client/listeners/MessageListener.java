@@ -1,14 +1,17 @@
 package com.github.dannyhn.bot.client.listeners;
 
+import java.util.Queue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.github.dannyhn.bot.handler.ContextMessageHandler;
-import com.github.dannyhn.bot.handler.MessageHandler;
+import com.github.dannyhn.bot.dto.MessageDTO;
 import com.github.dannyhn.bot.handler.StatusChangeHandler;
 import com.github.dannyhn.bot.handler.TypingEventHandler;
 import com.github.dannyhn.bot.handler.UserVoiceChannelJoinHandler;
 import com.github.dannyhn.bot.handler.factory.MessageHandlerFactory;
+import com.github.dannyhn.bot.message.handler.ContextMessageHandler;
+import com.github.dannyhn.bot.message.handler.MessageHandler;
 import com.github.dannyhn.bot.service.ContextService;
 import com.github.dannyhn.bot.service.RandomWordService;
 import com.github.dannyhn.bot.service.RateLimitingService;
@@ -46,6 +49,9 @@ public class MessageListener {
 	
 	@Autowired
 	private ContextService contextService;
+	
+	@Autowired
+	private Queue<MessageDTO> messageList;
 
 	/**
 	 * Triggers on bot startup
@@ -71,7 +77,8 @@ public class MessageListener {
 	@EventSubscriber
 	public void onMessageReceivedEvent(MessageReceivedEvent event) {
 		IMessage message = event.getMessage();
-		System.out.println(message.getAuthor().getName() + " : " + message);
+		messageList.add(new MessageDTO(message));
+		System.out.println( "Guild: " + message.getGuild() + " "  + message.getAuthor().getName() + " : " + message);
 		MessageHandler handler = messageHandlerFactory.getMessageHandler(message);
 		if (isValidCommand(handler, message) && canMakeRequest(message)) {
 			handler.handleMessage(message);

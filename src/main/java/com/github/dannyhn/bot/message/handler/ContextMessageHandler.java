@@ -1,4 +1,4 @@
-package com.github.dannyhn.bot.handler;
+package com.github.dannyhn.bot.message.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

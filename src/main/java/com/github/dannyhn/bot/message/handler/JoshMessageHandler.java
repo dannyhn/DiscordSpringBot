@@ -1,4 +1,4 @@
-package com.github.dannyhn.bot.handler;
+package com.github.dannyhn.bot.message.handler;
 
 import java.io.IOException;
 import java.io.InputStream;
