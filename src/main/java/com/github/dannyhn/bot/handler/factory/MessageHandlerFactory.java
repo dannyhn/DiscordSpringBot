@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.github.dannyhn.bot.message.handler.AdminMessageHandler;
 import com.github.dannyhn.bot.message.handler.ComplimentMessageHandler;
 import com.github.dannyhn.bot.message.handler.ContextMessageHandler;
+import com.github.dannyhn.bot.message.handler.DotaMessageHandler;
 import com.github.dannyhn.bot.message.handler.HelpMessageHandler;
 import com.github.dannyhn.bot.message.handler.InfoMessageHandler;
 import com.github.dannyhn.bot.message.handler.InsultMessageHandler;
@@ -80,6 +81,9 @@ public class MessageHandlerFactory {
 	@Autowired
 	private AdminMessageHandler adminMessageHandler;
 	
+	@Autowired
+	private DotaMessageHandler dotaMessageHandler;
+	
 	/**
 	 * @param message
 	 * @return
@@ -116,6 +120,8 @@ public class MessageHandlerFactory {
 			return joshMessageHandler;
 		} else if (lowerCasedMessage.startsWith(".pubg")) {
 			return pubgMessageHandler;
+		} else if (lowerCasedMessage.startsWith(".dota")) {
+			return dotaMessageHandler;
 		} else if (lowerCasedMessage.startsWith(".admin")) { 
 			return adminMessageHandler;
 		} else {

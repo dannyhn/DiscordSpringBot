@@ -3,6 +3,7 @@ package com.github.dannyhn.bot.config;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,7 @@ import com.github.dannyhn.bot.util.ClientLoginUtil;
 import sx.blah.discord.api.IDiscordClient;
 
 @Configuration
+@EnableCaching
 public class DiscordBotConfiguration {
 	
 	@Bean

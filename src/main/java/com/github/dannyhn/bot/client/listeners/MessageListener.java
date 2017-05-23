@@ -1,29 +1,20 @@
 package com.github.dannyhn.bot.client.listeners;
 
-import java.util.Queue;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.github.dannyhn.bot.dto.MessageDTO;
+import com.github.dannyhn.bot.handler.MessageReceivedHandler;
 import com.github.dannyhn.bot.handler.StatusChangeHandler;
 import com.github.dannyhn.bot.handler.TypingEventHandler;
+import com.github.dannyhn.bot.handler.UserUpdateHandler;
 import com.github.dannyhn.bot.handler.UserVoiceChannelJoinHandler;
-import com.github.dannyhn.bot.handler.factory.MessageHandlerFactory;
-import com.github.dannyhn.bot.message.handler.ContextMessageHandler;
-import com.github.dannyhn.bot.message.handler.MessageHandler;
-import com.github.dannyhn.bot.service.ContextService;
-import com.github.dannyhn.bot.service.RandomWordService;
-import com.github.dannyhn.bot.service.RateLimitingService;
-
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.StatusChangeEvent;
 import sx.blah.discord.handle.impl.events.TypingEvent;
+import sx.blah.discord.handle.impl.events.UserUpdateEvent;
 import sx.blah.discord.handle.impl.events.UserVoiceChannelJoinEvent;
-import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.Status;
 
 /**
  * @author Danny
@@ -31,9 +22,6 @@ import sx.blah.discord.handle.obj.Status;
  */
 @Component
 public class MessageListener {
-	
-	@Autowired
-	private MessageHandlerFactory messageHandlerFactory;
 	
 	@Autowired
 	private StatusChangeHandler statusChangeHandler;
@@ -45,13 +33,10 @@ public class MessageListener {
 	private TypingEventHandler typingEventHandler;
 	
 	@Autowired
-	private RateLimitingService rateLimitingService;
+	private MessageReceivedHandler messageReceivedHandler;
 	
 	@Autowired
-	private ContextService contextService;
-	
-	@Autowired
-	private Queue<MessageDTO> messageList;
+	private UserUpdateHandler userUpdateHandler;
 
 	/**
 	 * Triggers on bot startup
@@ -67,6 +52,11 @@ public class MessageListener {
 	public void onStatusChangeEvent(StatusChangeEvent event) {
 		statusChangeHandler.handleStatusChangeEvent(event.getNewStatus(), event.getUser());
 	}
+	
+	@EventSubscriber
+	public void onUserUpdateEvent(UserUpdateEvent event) {
+		userUpdateHandler.handleUserUpdateEvent(event.getNewUser());
+	}
 
 	/**
 	 * Triggers on message received event
@@ -76,14 +66,7 @@ public class MessageListener {
 	 */
 	@EventSubscriber
 	public void onMessageReceivedEvent(MessageReceivedEvent event) {
-		IMessage message = event.getMessage();
-		messageList.add(new MessageDTO(message));
-		System.out.println( "Guild: " + message.getGuild() + " "  + message.getAuthor().getName() + " : " + message);
-		MessageHandler handler = messageHandlerFactory.getMessageHandler(message);
-		if (isValidCommand(handler, message) && canMakeRequest(message)) {
-			handler.handleMessage(message);
-		}
-
+		messageReceivedHandler.handleMessageReceivedEvent(event.getMessage());
 	}
 	
 	@EventSubscriber
@@ -97,16 +80,4 @@ public class MessageListener {
 		typingEventHandler.handleTypingEvent(event.getChannel(), event.getUser());
 	}
 	
-	private boolean isValidCommand(MessageHandler handler, IMessage message) {
-		if (handler instanceof ContextMessageHandler)  {
-			return contextService.getContext(message.getContent()) != null;
-		} else {
-			return true;
-		}
-	}
-	
-	private boolean canMakeRequest(IMessage message) {
-		return rateLimitingService.canMakeRequest(message.getAuthor().getID());
-	}
-
 }

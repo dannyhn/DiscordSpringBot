@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,8 +53,11 @@ public class MessageController {
 		return channels;
 	}
 	
+	
 	@RequestMapping(path="/test", method=RequestMethod.GET)
+	@Cacheable("messagelist")
 	public List<MessageDTO> getAll() {
+		System.out.println("Request Was Made");
 		List<MessageDTO> messages = new ArrayList<>();
 		for (MessageDTO message : messageList) {
 			messages.add(message);
