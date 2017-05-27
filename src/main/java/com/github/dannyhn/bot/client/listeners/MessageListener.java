@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.handler.MessageReceivedHandler;
+import com.github.dannyhn.bot.handler.MessageSendHandler;
 import com.github.dannyhn.bot.handler.StatusChangeHandler;
 import com.github.dannyhn.bot.handler.TypingEventHandler;
 import com.github.dannyhn.bot.handler.UserUpdateHandler;
 import com.github.dannyhn.bot.handler.UserVoiceChannelJoinHandler;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
+import sx.blah.discord.handle.impl.events.MessageSendEvent;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.StatusChangeEvent;
 import sx.blah.discord.handle.impl.events.TypingEvent;
@@ -37,6 +39,9 @@ public class MessageListener {
 	
 	@Autowired
 	private UserUpdateHandler userUpdateHandler;
+	
+	@Autowired
+	private MessageSendHandler messageSendHandler;
 
 	/**
 	 * Triggers on bot startup
@@ -56,6 +61,11 @@ public class MessageListener {
 	@EventSubscriber
 	public void onUserUpdateEvent(UserUpdateEvent event) {
 		userUpdateHandler.handleUserUpdateEvent(event.getNewUser());
+	}
+	
+	@EventSubscriber
+	public void onMessageSendEvent(MessageSendEvent event) {
+		messageSendHandler.handleMessageSendEvent(event.getMessage());
 	}
 
 	/**
