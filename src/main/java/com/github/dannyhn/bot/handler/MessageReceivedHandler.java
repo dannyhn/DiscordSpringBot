@@ -40,7 +40,7 @@ public class MessageReceivedHandler {
 		if (message.getGuild() == null) {
 			System.out.println( "DM: "  + message.getAuthor().getName() + " : " + message);
 		} else {
-			System.out.println( "Guild: " + message.getGuild().getName() + " "  + message.getAuthor().getName() + " : " + message);
+			System.out.println( message.getGuild().getName() + ": "  + message.getAuthor().getName() + " : " + message);
 		}
 		MessageHandler handler = messageHandlerFactory.getMessageHandler(message);
 		if (isValidCommand(handler, message) && canMakeRequest(message)) {

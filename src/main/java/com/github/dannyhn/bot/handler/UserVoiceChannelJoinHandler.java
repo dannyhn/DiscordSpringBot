@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.data.User;
 import com.github.dannyhn.bot.service.UserService;
-import com.github.dannyhn.sqlite.client.Person;
 import com.github.dannyhn.sqlite.client.SqliteObjectClient;
 
 import sx.blah.discord.handle.obj.IUser;
