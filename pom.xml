@@ -8,8 +8,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>WordService</name>
-	<description>Word Service Project for Spring Boot</description>
+	<name>Discord Bot</name>
+	<description>Discord Bot Project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

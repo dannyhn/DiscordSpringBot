@@ -3,3 +3,5 @@ https://projectlombok.org/download.html
 
 For setting up eclipse plugin for code coverage
 http://www.eclemma.org/installation.html
+
+mvn spring-boot:run
