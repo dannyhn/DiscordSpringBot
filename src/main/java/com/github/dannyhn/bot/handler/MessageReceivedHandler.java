@@ -11,6 +11,7 @@ import com.github.dannyhn.bot.handler.factory.MessageHandlerFactory;
 import com.github.dannyhn.bot.message.handler.ContextMessageHandler;
 import com.github.dannyhn.bot.message.handler.MessageHandler;
 import com.github.dannyhn.bot.service.ContextService;
+import com.github.dannyhn.bot.service.LogService;
 import com.github.dannyhn.bot.service.RateLimitingService;
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -33,14 +34,22 @@ public class MessageReceivedHandler {
 	
 	@Autowired
 	private Queue<MessageDTO> messageList;
+	
+	@Autowired
+	private LogService log;
 
 	@CacheEvict(value = {"messagelist"}, allEntries = true)
 	public void handleMessageReceivedEvent(IMessage message) {
+		if (message.getGuild() != null && message.getChannel().getID().equals("319967798724132872")) { //websocket channel
+			return;
+		}
 		messageList.add(new MessageDTO(message));
 		if (message.getGuild() == null) {
-			System.out.println( "DM: "  + message.getAuthor().getName() + " : " + message);
+			log.log("DM Received From " + message.getAuthor().getName());
+			//System.out.println( "DM: "  + message.getAuthor().getName() + " : " + message);
 		} else {
-			System.out.println( message.getGuild().getName() + ": "  + message.getAuthor().getName() + " : " + message);
+			log.log(message.getGuild().getName() + ": "  + message.getAuthor().getName() + " : " + message);
+			//System.out.println( message.getGuild().getName() + ": "  + message.getAuthor().getName() + " : " + message);
 		}
 		MessageHandler handler = messageHandlerFactory.getMessageHandler(message);
 		if (isValidCommand(handler, message) && canMakeRequest(message)) {

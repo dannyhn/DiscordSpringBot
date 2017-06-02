@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Component
 public class RandomWordService implements InitializingBean{
+	
+	@Autowired
+	private LogService log;
 	
 	private Map<String, List<String>> wordMap;
 	private Random random = new Random();
@@ -129,7 +133,8 @@ public class RandomWordService implements InitializingBean{
 		try {
 			theString = IOUtils.toString(inputStream, "UTF-8");
 		} catch (Exception e) {
-			System.out.println("Error Converting InputStream");
+			log.log("Error Converting InputStream");
+			//System.out.println("Error Converting InputStream");
 			e.printStackTrace();
 		}
 		IOUtils.closeQuietly(inputStream);
@@ -154,7 +159,8 @@ public class RandomWordService implements InitializingBean{
 			String[] quoteArr = mapper.readValue(convertStreamToString("quotes.json", classLoader), String[].class);
 			wordMap.put(quote, Arrays.asList(quoteArr));
 		} catch (IOException e) {
-			System.out.println("Error on RandomWordUtil Init: " + e.getMessage());
+			log.log("Error on RandomWordUtil Init: " + e.getMessage());
+			//System.out.println("Error on RandomWordUtil Init: " + e.getMessage());
 		}
 	}
 

@@ -28,6 +28,9 @@ public class BotService {
 	@Autowired
 	private Queue<MessageDTO> messageList;
 	
+	@Autowired
+	private LogService log;
+	
 	@Scheduled(fixedRate = Long.MAX_VALUE, initialDelay = 10000)
 	public void startup() {
 		EventDispatcher dispatcher = discordClient.getDispatcher(); 
@@ -50,6 +53,7 @@ public class BotService {
 		while (head != null) {
 			timePassed = currentTime - head.getTimestamp();
 			if (timePassed > 600000) {
+				log.log("Message has been deleted: " + messageList.poll());
 				System.out.println("Message has been deleted: " + messageList.poll());
 				head = messageList.peek();
 			} else {

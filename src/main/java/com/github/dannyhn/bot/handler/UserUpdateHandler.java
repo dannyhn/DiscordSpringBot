@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.data.User;
+import com.github.dannyhn.bot.service.LogService;
 import com.github.dannyhn.sqlite.client.SqliteObjectClient;
 
 import sx.blah.discord.handle.obj.IUser;
@@ -17,6 +18,9 @@ public class UserUpdateHandler {
 	
 	@Autowired
 	private SqliteObjectClient<User> sqliteClient;
+	
+	@Autowired
+	private LogService log;
 
 	public void handleUserUpdateEvent(IUser user) {
 		String id = user.getID();
@@ -26,7 +30,8 @@ public class UserUpdateHandler {
 			dbUser.setId(id);
 		}
 		dbUser.setAvatarUrl(user.getAvatarURL());
-		System.out.println("User Status Changed: " + user.getName());
+		log.log("User Status Changed: " + user.getName());
+		//System.out.println("User Status Changed: " + user.getName());
 	}
 	
 }

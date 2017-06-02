@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.dannyhn.bot.data.User;
+import com.github.dannyhn.bot.service.LogService;
 import com.github.dannyhn.bot.service.UserService;
 import com.github.dannyhn.sqlite.client.SqliteObjectClient;
 
@@ -22,6 +23,9 @@ public class UserVoiceChannelJoinHandler {
 	
 	@Autowired
 	private SqliteObjectClient<User> client;
+	
+	@Autowired
+	private LogService log;
 
 	public void handleUserVoiceChannelJoinEvent(IVoiceChannel channel, IUser user) {
 		String userName = userService.getName(user, channel.getGuild());
@@ -31,7 +35,8 @@ public class UserVoiceChannelJoinHandler {
 			person.setId(user.getID());
 			person.setName(userName);
 		}
-		System.out.println("User " + userName + " has joined channel " + channel.getName());
+		log.log("User " + userName + " has joined channel " + channel.getName());
+		//System.out.println("User " + userName + " has joined channel " + channel.getName());
 	}
 	
 }

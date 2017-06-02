@@ -16,6 +16,9 @@ public class MessageService {
 	
 	@Autowired
 	private IDiscordClient discordClient;
+	
+	@Autowired
+	private LogService log;
 
 	public void sendMessage(IChannel channel, String message, IMessage original, boolean delete) {
 		if (StringUtils.isEmpty(message)) {
@@ -27,7 +30,8 @@ public class MessageService {
 			}
 			channel.sendMessage(message);
 		} catch (Exception e) {
-			System.out.println("Error Sending Message: " + message + "\nOriginal: "+ original.getContent()  + " " + e.getMessage());
+			log.log("Error Sending Message: " + message + "\nOriginal: "+ original.getContent()  + " " + e.getMessage());
+			//System.out.println("Error Sending Message: " + message + "\nOriginal: "+ original.getContent()  + " " + e.getMessage());
 		}
 
 	}
